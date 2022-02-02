@@ -16,6 +16,7 @@ function app(people){
       break;
     case 'no':
       // TODO: search by traits
+      switchToEyeColor();
       break;
       default:
     app(people); // restart app
@@ -23,6 +24,7 @@ function app(people){
   }
   
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
+  debugger
   mainMenu(searchResults, people);
 }
 
@@ -35,8 +37,7 @@ function mainMenu(person, people){
     alert("Could not find that individual.");
     return app(people); // restart
   }
-
-  let displayOption = promptFor("Found " + array.data.firstName + " " + array.data.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
+  let displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
 
   switch(displayOption){
     case "info":
@@ -69,7 +70,6 @@ function mainMenu(person, people){
 function searchByName(people){
   let firstName = promptFor("What is the person's first name?", autoValid);
   let lastName = promptFor("What is the person's last name?", autoValid);
-
   let foundPerson = people.filter(function(potentialMatch){
     if(potentialMatch.firstName === firstName && potentialMatch.lastName === lastName){
       return true;
@@ -78,16 +78,75 @@ function searchByName(people){
       return false;
     }
   })
+  let newObject = foundPerson[0]
   // TODO: find the person single person object using the name they entered.
-  return foundPerson;
+  //Check that foundPerson is a single array entry, after that build a new object using the data found in that array, after we verify that its a single entry in the array
+  //If not, then we know the name is not a match to the name entered, or its a multi-match: return the new object
+  return newObject;
 }
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
-function searchByEyeColor(people){
+function switchToEyeColor(people){
+  let searchType = promptFor("Do you know the person's eye color?", yesNo).toLowerCase();
+  switch(searchType){
+    case 'yes':
+      searchResults = searchByEyeColor(people);
+      return searchResults;
+    case 'no':
+      switchToGender()
+      break;
+    default:
+      switchToGender()
+      break;
+  }}
 
-}
+function switchToGender(){
+  let searchType = promptFor("Do you know the person's gender?", yesNo).toLowerCase();
+  switch(searchType){
+    case 'yes':
+      searchResults = searchByGender(people);
+      break;
+    case 'no':
+      
+      break;
+    default:
+      
+      break;
+    }}
+
 
 //TODO: add other trait filter functions here.
+
+function searchByGender(people){
+  let gender = promptFor('What is the person\'s gender?')
+  let foundPerson = people.filter(function(el){
+    if(el.gender === gender){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  return foundPerson
+} 
+
+
+
+
+
+
+function searchByEyeColor(people){
+  let eyeColor = promptFor('What is this person\'s eye color?')
+  let foundPerson = people.filter(function(el){
+    if(el.eyeColor === eyeColor){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  return foundPerson
+} 
 
 
 
