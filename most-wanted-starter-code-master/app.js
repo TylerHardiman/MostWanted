@@ -16,7 +16,11 @@ function app(people){
       break;
     case 'no':
       // TODO: search by traits
-      switchToEyeColor();
+  let eyeColorArray = switchToEyeColor(people);
+  let genderArray = switchToGender(eyeColorArray);
+  let occupationArray = switchToOccupation(genderArray);
+  
+
       break;
       default:
     app(people); // restart app
@@ -24,7 +28,6 @@ function app(people){
   }
   
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
-  debugger
   mainMenu(searchResults, people);
 }
 
@@ -90,35 +93,61 @@ function switchToEyeColor(people){
   let searchType = promptFor("Do you know the person's eye color?", yesNo).toLowerCase();
   switch(searchType){
     case 'yes':
-      searchResults = searchByEyeColor(people);
+      let searchResults = searchByEyeColor(people);
       return searchResults;
     case 'no':
-      switchToGender()
+      switchToGender(people)
       break;
     default:
-      switchToGender()
+      switchToGender(people)
       break;
   }}
 
-function switchToGender(){
+function switchToGender(people){
   let searchType = promptFor("Do you know the person's gender?", yesNo).toLowerCase();
   switch(searchType){
     case 'yes':
-      searchResults = searchByGender(people);
-      break;
+      let searchResults = searchByGender(people);
+      return searchResults;
     case 'no':
-      
+      switchToOccupation(people);
       break;
     default:
-      
+      switchToOccupation(people);
+      break;
+    }}
+  
+function switchToOccupation(people){
+  let searchType = promptFor('Do you know this persons occupation?', yesNo).toLowerCase();
+  switch(searchType){
+    case 'yes':
+      let searchResults = searchByOccupation(people);
+      return searchResults;
+    case 'no':
+      switchToWeight();
+      break;
+    default:
+      switchToWeight();
       break;
     }}
 
+function switchToWeight(people){
+  let searchType = promptFor('Do you know this persons weight?', yesNo).toLowerCase();
+  switch(searchType){
+    case 'yes':
+    let searchResults = searchByWeight(people);
+      break;
+    case 'no':
+      switchToHeight();
+      break;
+    default:
+      switchToHeight()
+}}
 
 //TODO: add other trait filter functions here.
 
 function searchByGender(people){
-  let gender = promptFor('What is the person\'s gender?')
+  let gender = prompt('What is the person\'s gender?')
   let foundPerson = people.filter(function(el){
     if(el.gender === gender){
       return true;
@@ -136,7 +165,7 @@ function searchByGender(people){
 
 
 function searchByEyeColor(people){
-  let eyeColor = promptFor('What is this person\'s eye color?')
+  let eyeColor = prompt('What is this person\'s eye color?')
   let foundPerson = people.filter(function(el){
     if(el.eyeColor === eyeColor){
       return true;
@@ -149,6 +178,19 @@ function searchByEyeColor(people){
 } 
 
 
+
+function searchByWeight(people){
+  let weight = prompt('What is this persons weight?')
+  let foundPerson = people.filteer(function(el){
+    if(el.weight === weight){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  return foundPerson
+}
 
 //#endregion
 
