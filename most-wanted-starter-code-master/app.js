@@ -19,7 +19,7 @@ function app(people){
   let eyeColorArray = switchToEyeColor(people);
   let genderArray = switchToGender(eyeColorArray);
   let occupationArray = switchToOccupation(genderArray);
-  
+  let weightArray = switchToWeight(occupationArray);
 
       break;
       default:
@@ -124,10 +124,10 @@ function switchToOccupation(people){
       let searchResults = searchByOccupation(people);
       return searchResults;
     case 'no':
-      switchToWeight();
+      switchToWeight(people);
       break;
     default:
-      switchToWeight();
+      switchToWeight(people);
       break;
     }}
 
@@ -136,13 +136,27 @@ function switchToWeight(people){
   switch(searchType){
     case 'yes':
     let searchResults = searchByWeight(people);
-      break;
+      return searchResults;
     case 'no':
-      switchToHeight();
+      switchToHeight(people);
       break;
     default:
-      switchToHeight()
+      switchToHeight(people)
 }}
+
+function switchToHeight(people){
+  let searchType = promptFor('Do you know this person\'s height?', yesNo).toLowerCase();
+  switch(searchType){
+    case 'yes':
+      let searchResults = searchByHeight(people);
+        return searchResults
+      case 'no':
+        displayPeople(people);
+        break;
+      default:
+        displayPeople(people);
+  }
+}
 
 //TODO: add other trait filter functions here.
 
@@ -159,11 +173,6 @@ function searchByGender(people){
   return foundPerson
 } 
 
-
-
-
-
-
 function searchByEyeColor(people){
   let eyeColor = prompt('What is this person\'s eye color?')
   let foundPerson = people.filter(function(el){
@@ -175,14 +184,38 @@ function searchByEyeColor(people){
     }
   })
   return foundPerson
-} 
+}
 
-
+function searchByOccupation(people){
+let occupation = prompt('What is this person\'s occupation?')
+let foundPerson = people.filter(function(el){
+  if(el.occupation === occupation){
+    return true;
+  }
+  else{
+    return false;
+  }
+})
+return foundPerson
+}
 
 function searchByWeight(people){
   let weight = prompt('What is this persons weight?')
   let foundPerson = people.filteer(function(el){
     if(el.weight === weight){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  return foundPerson
+}
+
+function searchByHeight(people){
+  let height = prompt('what is this person\'s height?')
+  let foundPerson = people.filter(function(el){
+    if(el.height === height){
       return true;
     }
     else{
@@ -211,6 +244,7 @@ function displayPerson(person){
   // height, weight, age, name, occupation, eye color.
   let personInfo = "First Name: " + person.firstName + "\n";
   personInfo += "Last Name: " + person.lastName + "\n";
+  personInfo += "Gender: " + person.gender + "\n";
   // TODO: finish getting the rest of the information to display.
   alert(personInfo);
 }
