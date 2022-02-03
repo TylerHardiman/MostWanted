@@ -22,9 +22,8 @@ function app(people){
   let height = getHeight();
   let weight = getWeight();
   searchResults = searchByTraits(eyeColor, gender, occupation, height, weight, people);
-  alert('Is the person you\'re looking for in this list?');
-  displayPeople(searchResults);
-  
+  let singlePerson = chooseSinglePerson(searchResults)
+  displayPerson(singlePerson)
       break;
       default:
     app(people); // restart app
@@ -49,7 +48,7 @@ function mainMenu(person, people){
 
   switch(displayOption){
     case "info":
-    // TODO: get person's info
+    displayPerson(person);
     break;
     case "family":
     // TODO: get person's family
@@ -101,10 +100,7 @@ function getOccupation(){
   }
 
 function getHeight() {
-  let userInput = promptFor(
-    "Do you want to search by height?",
-    yesNo
-  ).toLowerCase();
+  let userInput = promptFor("Do you want to search by height?",yesNo).toLowerCase();
   if (userInput == "yes") {
     let gender = prompt("What is their height?").toLowerCase();
     return gender;
@@ -243,9 +239,35 @@ function displayPerson(person){
   // height, weight, age, name, occupation, eye color.
   let personInfo = "First Name: " + person.firstName + "\n";
   personInfo += "Last Name: " + person.lastName + "\n";
-  personInfo += "Gender: " + person.gender + "\n";
+  personInfo += "DOB: " + person.dob + "\n";
+  personInfo += "Occupation" + person.occupation + "\n"
+  personInfo += "Eye Color:" + person.eyeColor + "\n"
+  personInfo += "Height:" + person.height + "\n"
+  personInfo += "Weight:" + person.weight + "\n"
   // TODO: finish getting the rest of the information to display.
   alert(personInfo);
+}
+
+function chooseSinglePerson(people){
+  displayPeople(people)
+  let userInput = prompt('Is the person you\'re looking for in this list?')
+  if(userInput === 'yes'){
+    let userInputFirstName = prompt('Please enter their first name ')
+    let userInputLastName = prompt('Please enter their last name ')
+    let foundPerson = people.filter(function(el){
+      if(el.firstName === userInputFirstName && el.lastName === userInputLastName){
+        return true;
+      }
+      else{
+        return false;
+      }
+    })
+    let newObject = foundPerson[0]
+    return newObject;
+  }
+  else{
+    alert('Then why are you here????')
+  }
 }
 
 //#endregion
