@@ -22,8 +22,8 @@ function app(people){
   let height = getHeight();
   let weight = getWeight();
   searchResults = searchByTraits(eyeColor, gender, occupation, height, weight, people);
-  let singlePerson = chooseSinglePerson(searchResults)
-  displayPerson(singlePerson)
+  searchResults = chooseSinglePerson(searchResults)
+  displayPerson(searchResults)
       break;
       default:
     app(people); // restart app
