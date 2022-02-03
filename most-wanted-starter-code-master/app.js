@@ -51,6 +51,7 @@ function mainMenu(person, people){
     displayPerson(person);
     break;
     case "family":
+    findFamily(person, people);
     // TODO: get person's family
     break;
     case "descendants":
@@ -64,6 +65,51 @@ function mainMenu(person, people){
     default:
     return mainMenu(person, people); // ask again
   }
+}
+
+function findFamily(person, people){
+  let spouseInfo = ''
+  if(person.spouse != null){
+  let spouse = people.filter(function(el){
+    if(el.currentSpouse === person.id){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  spouseInfo += `${person.firstName}'s Spouse: ` + '\n'
+  spouseInfo += 'First Name: ' + spouse[0].firstName + '\n'
+  spouseInfo += 'Last Name: ' + spouse[0].lastName + '\n'
+}
+else{
+  spouseInfo += `${person.firstName} doesn\'t have a spouse` + '\n'
+}
+  let parent = []
+  if(person.parents.length != 0){
+    person.parents.forEach(element => {
+    let results = people.filter(function(el){
+        if(el.id === element){
+          return true;
+        }
+        else{
+          return false;
+        }
+      })
+      parent.push(results[0])
+    });
+  }
+  else{
+  spouseInfo += `${person.firstName} doesn\'t have any parents` + '\n'
+  }
+  parent.forEach(parent => {
+    
+  })
+  
+
+    
+
+  alert(spouseInfo)
 }
 
 function getEyeColor(){
