@@ -16,11 +16,15 @@ function app(people){
       break;
     case 'no':
       // TODO: search by traits
-  let eyeColorArray = switchToEyeColor(people);
-  let genderArray = switchToGender(eyeColorArray);
-  let occupationArray = switchToOccupation(genderArray);
-  let weightArray = switchToWeight(occupationArray);
-
+  let eyeColor = getEyeColor();
+  let gender = getGender();
+  let occupation = getOccupation();
+  let height = getHeight();
+  let weight = getWeight();
+  searchResults = searchByTraits(eyeColor, gender, occupation, height, weight, people);
+  alert('Is the person you\'re looking for in this list?');
+  displayPeople(searchResults);
+  
       break;
       default:
     app(people); // restart app
@@ -30,6 +34,7 @@ function app(people){
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
   mainMenu(searchResults, people);
 }
+
 
 // Menu function to call once you find who you are looking for
 function mainMenu(person, people){
@@ -62,6 +67,63 @@ function mainMenu(person, people){
   }
 }
 
+function getEyeColor(){
+  let userInput = promptFor('Do you want to search by eye color?', yesNo).toLowerCase();
+  if(userInput == 'yes'){
+   let eyeColor = prompt('What is their eye color?').toLowerCase();
+   return eyeColor;
+  }
+  else{
+    return '';
+  }
+}
+
+function getGender(){
+  let userInput = promptFor('Do you want to search by gender?', yesNo).toLowerCase();
+  if(userInput == 'yes'){
+   let gender = prompt('What is their gender?').toLowerCase();
+   return gender;
+  }
+  else{
+    return '';
+  }
+  }
+
+function getOccupation(){
+  let userInput = promptFor('Do you want to search by occupation?', yesNo).toLowerCase();
+  if(userInput == 'yes'){
+    let gender = prompt('What is their occupation?').toLowerCase();
+    return gender;
+  }
+  else{
+    return '';
+  }
+  }
+
+function getHeight() {
+  let userInput = promptFor(
+    "Do you want to search by height?",
+    yesNo
+  ).toLowerCase();
+  if (userInput == "yes") {
+    let gender = prompt("What is their height?").toLowerCase();
+    return gender;
+  } else {
+    return "";
+  }
+}
+
+function getWeight(){
+  let userInput = promptFor('Do you want to search by weight?', yesNo).toLowerCase();
+  if(userInput == 'yes'){
+    let gender = prompt('What is their weight?').toLowerCase();
+    return gender;
+  }
+  else{
+    return '';
+  }
+  }
+
 //#endregion
 
 //Filter functions.
@@ -89,76 +151,64 @@ function searchByName(people){
 }
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
-function switchToEyeColor(people){
-  let searchType = promptFor("Do you know the person's eye color?", yesNo).toLowerCase();
-  switch(searchType){
-    case 'yes':
-      let searchResults = searchByEyeColor(people);
-      return searchResults;
-    case 'no':
-      switchToGender(people)
-      break;
-    default:
-      switchToGender(people)
-      break;
-  }}
 
-function switchToGender(people){
-  let searchType = promptFor("Do you know the person's gender?", yesNo).toLowerCase();
-  switch(searchType){
-    case 'yes':
-      let searchResults = searchByGender(people);
-      return searchResults;
-    case 'no':
-      switchToOccupation(people);
-      break;
-    default:
-      switchToOccupation(people);
-      break;
-    }}
-  
-function switchToOccupation(people){
-  let searchType = promptFor('Do you know this persons occupation?', yesNo).toLowerCase();
-  switch(searchType){
-    case 'yes':
-      let searchResults = searchByOccupation(people);
-      return searchResults;
-    case 'no':
-      switchToWeight(people);
-      break;
-    default:
-      switchToWeight(people);
-      break;
-    }}
-
-function switchToWeight(people){
-  let searchType = promptFor('Do you know this persons weight?', yesNo).toLowerCase();
-  switch(searchType){
-    case 'yes':
-    let searchResults = searchByWeight(people);
-      return searchResults;
-    case 'no':
-      switchToHeight(people);
-      break;
-    default:
-      switchToHeight(people)
-}}
-
-function switchToHeight(people){
-  let searchType = promptFor('Do you know this person\'s height?', yesNo).toLowerCase();
-  switch(searchType){
-    case 'yes':
-      let searchResults = searchByHeight(people);
-        return searchResults
-      case 'no':
-        displayPeople(people);
-        break;
-      default:
-        displayPeople(people);
-  }
-}
 
 //TODO: add other trait filter functions here.
+
+function searchByTraits(eyeColor = '', gender = '', occupation = '', height = '', weight = '', people){
+  let searchResults = people
+  if(eyeColor != ''){
+    searchResults = searchResults.filter(function(el){
+      if(el.eyeColor === eyeColor){
+        return true;
+      }
+      else{
+        return false;
+      }
+    })
+  }
+  if(gender != ''){
+    searchResults = searchResults.filter(function(el){
+      if(el.gender === gender){
+        return true;
+      }
+      else{
+        return false;
+      }
+    })
+  }
+  if(occupation != ''){
+    searchResults = searchResults.filter(function(el){
+      if(el.occupation === occupation){
+        return true;
+      }
+      else{
+        return false;
+      }
+    })
+  }
+  if(height != ''){
+    searchResults = searchResults.filter(function(el){
+      if(el.height === height){
+        return true;
+      }
+      else{
+        return false;
+      }
+    })
+  }
+  if(weight != ''){
+    searchResults = searchResults.filter(function(el){
+      if(el.weight === weight){
+        return true;
+      }
+      else{
+        return false;
+      }
+    })
+  }
+  return searchResults;
+}
 
 function searchByGender(people){
   let gender = prompt('What is the person\'s gender?')
@@ -173,58 +223,6 @@ function searchByGender(people){
   return foundPerson
 } 
 
-function searchByEyeColor(people){
-  let eyeColor = prompt('What is this person\'s eye color?')
-  let foundPerson = people.filter(function(el){
-    if(el.eyeColor === eyeColor){
-      return true;
-    }
-    else{
-      return false;
-    }
-  })
-  return foundPerson
-}
-
-function searchByOccupation(people){
-let occupation = prompt('What is this person\'s occupation?')
-let foundPerson = people.filter(function(el){
-  if(el.occupation === occupation){
-    return true;
-  }
-  else{
-    return false;
-  }
-})
-return foundPerson
-}
-
-function searchByWeight(people){
-  let weight = prompt('What is this persons weight?')
-  let foundPerson = people.filteer(function(el){
-    if(el.weight === weight){
-      return true;
-    }
-    else{
-      return false;
-    }
-  })
-  return foundPerson
-}
-
-function searchByHeight(people){
-  let height = prompt('what is this person\'s height?')
-  let foundPerson = people.filter(function(el){
-    if(el.height === height){
-      return true;
-    }
-    else{
-      return false;
-    }
-  })
-  return foundPerson
-}
-
 //#endregion
 
 //Display functions.
@@ -238,6 +236,7 @@ function displayPeople(people){
     return person.firstName + " " + person.lastName;
   }).join("\n"));
 }
+
 
 function displayPerson(person){
   // print all of the information about a person:
