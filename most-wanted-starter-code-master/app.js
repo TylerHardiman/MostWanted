@@ -323,10 +323,10 @@ function displayPerson(person){
   let personInfo = "First Name: " + person.firstName + "\n";
   personInfo += "Last Name: " + person.lastName + "\n";
   personInfo += "DOB: " + person.dob + "\n";
-  personInfo += "Occupation" + person.occupation + "\n"
-  personInfo += "Eye Color:" + person.eyeColor + "\n"
-  personInfo += "Height:" + person.height + "\n"
-  personInfo += "Weight:" + person.weight + "\n"
+  personInfo += "Occupation: " + person.occupation + "\n"
+  personInfo += "Eye Color: " + person.eyeColor + "\n"
+  personInfo += "Height: " + person.height + "\n"
+  personInfo += "Weight: " + person.weight + "\n"
   // TODO: finish getting the rest of the information to display.
   alert(personInfo);
 }
