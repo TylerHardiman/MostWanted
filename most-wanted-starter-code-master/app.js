@@ -56,6 +56,7 @@ function mainMenu(person, people){
     break;
     case "descendants":
     // TODO: get person's descendants
+    findDescendants(person, people);
     break;
     case "restart":
     app(people); // restart
@@ -113,6 +114,63 @@ function findSiblings(person, people, parents){
       })
   }
     return siblings;
+}
+
+function findDescendants(person, people){
+  let parentResults = []
+  if(person.parents.length != 0){
+    person.parents.forEach(parentId => {
+    let results = people.filter(function(personObj){
+        if(personObj.id === parentId){
+          return true;
+        }
+        else{
+          return false;
+        }
+      })
+    parentResults.push(results[0])
+})
+  }
+  let descendants = []
+  let descendantsResults = people.filter(function(descendantsObj){
+    if(descendantsObj.parents.includes(person.id)){
+      return true;
+
+    }
+    else{
+      return false;
+    }
+  })
+  descendants = descendantsResults
+  let descendantInfo = ''
+  descendantInfo += `${person.firstName}'s children: ` + '\n'
+  descendants.forEach(descendant => {
+    descendantInfo += "First Name: " + descendant.firstName + '\n'
+    descendantInfo += "Last Name: " + descendant.lastName + '\n'
+  })
+  alert(descendantInfo)
+  findGrandChildren(person, people, descendants)
+}
+
+function findGrandChildren(person, people, children){
+  let grandChildren = []
+  let results = people.forEach(personObj => {
+      if(childObj.parents.includes(personObj.id)){
+        return true;
+      }
+      else{
+        return false;
+      }
+    })
+    
+  }
+  let grandChildrenInfo = ''
+  grandChildrenInfo += `${person.firstName}'s Grandchildren: ` + '\n'
+  results.forEach(grandChild => {
+  grandChildrenInfo += "First Name: " + grandChild.firstName + '\n'
+  grandChildrenInfo += "Last Name: " + grandChild.lastName + '\n'
+  })
+  alert(grandChildrenInfo)
 }
 
 function findFamily(person, people){
