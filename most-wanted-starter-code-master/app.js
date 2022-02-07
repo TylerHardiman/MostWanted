@@ -67,9 +67,11 @@ function mainMenu(person, people){
   }
 }
 
-function findFamily(person, people){
-  let familyInfo = ''
-  if(person.currentSpouse != null){
+function findDescendants(person, people){
+  let descendants = []
+}
+
+function findSpouse(person, people){
   let spouse = people.filter(function(el){
     if(el.currentSpouse === person.id){
       return true;
@@ -78,16 +80,12 @@ function findFamily(person, people){
       return false;
     }
   })
-  familyInfo += `${person.firstName}'s Spouse: ` + '\n'
-  familyInfo += 'First Name: ' + spouse[0].firstName + '\n'
-  familyInfo += 'Last Name: ' + spouse[0].lastName + '\n'
+  return spouse;
 }
-else{
-  familyInfo += `${person.firstName} doesn\'t have a spouse` + '\n'
-}
+
+function findParents(person, people){
   let parentResults = []
   if(person.parents.length != 0){
-    familyInfo += `${person.firstName}'s parent/s: ` + '\n'
     person.parents.forEach(parentId => {
     let results = people.filter(function(personObj){
         if(personObj.id === parentId){
@@ -97,23 +95,57 @@ else{
           return false;
         }
       })
-      parentResults.push(results[0])
-    });
-    //create siblings array
-    //iterate over parent results for each parent in parentResults, return id/id's of the parent/parents
-    //iterate over people array until we find people with the same parent id
+    parentResults.push(results[0])
+})
+    return parentResults;
+  }}
+
+function findSiblings(person, people, parents){
+  let siblings = []
+  if(parents.length != 0){
+      siblings = people.filter(function(personObj){
+      if(personObj.parents.includes(parents[0].id) && person.id != personObj.id){
+          return true;
+      }
+      else{
+          return false;
+        }
+      })
   }
-  else{
-  familyInfo += `${person.firstName} doesn\'t have any parents` + '\n'
-  }
-  parentResults.forEach(parent => {
-    familyInfo += 'First Name: ' + parent.firstName + '\n'
-    familyInfo += 'Last Name: ' + parent.lastName + '\n'
-  })
+    return siblings;
+}
+
+function findFamily(person, people){
+  let familyInfo = ''
+  let spouse = findSpouse(person, people)
+  let parents = findParents(person, people)
+  let siblings = findSiblings(person, people, parents)
+if(spouse.length != 0){
+  familyInfo += `${person.firstName}'s Spouse: ` + '\n'
+  familyInfo += 'First Name: ' + spouse[0].firstName + '\n'
+  familyInfo += 'Last Name: ' + spouse[0].lastName + '\n'
+}
+else{
+  familyInfo += `${person.firstName} doesn\'t have a spouse` + '\n'
+}
   
-
-    
-
+  if(siblings.length != 0){
+      familyInfo += `${person.firstName}'s sibling/s: ` + '\n'
+      siblings.forEach(sibling => {
+        familyInfo +=  'First Name: ' + sibling.firstName + '\n'
+        familyInfo +=  'Last Name: ' + sibling.lastName + '\n'
+      })
+    }
+    else{
+      familyInfo += `${person.firstName} doesn't have any siblings.`
+    }
+    if(parents.length != 0){
+      familyInfo += `${person.firstName}'s parents: ` + '\n'
+      parents.forEach(parent => {
+        familyInfo +=  'First Name: ' + parent.firstName + '\n'
+        familyInfo +=  'Last Name: ' + parent.lastName + '\n'
+      })
+    }
   alert(familyInfo)
 }
 
