@@ -68,8 +68,8 @@ function mainMenu(person, people){
 }
 
 function findFamily(person, people){
-  let spouseInfo = ''
-  if(person.spouse != null){
+  let familyInfo = ''
+  if(person.currentSpouse != null){
   let spouse = people.filter(function(el){
     if(el.currentSpouse === person.id){
       return true;
@@ -78,38 +78,43 @@ function findFamily(person, people){
       return false;
     }
   })
-  spouseInfo += `${person.firstName}'s Spouse: ` + '\n'
-  spouseInfo += 'First Name: ' + spouse[0].firstName + '\n'
-  spouseInfo += 'Last Name: ' + spouse[0].lastName + '\n'
+  familyInfo += `${person.firstName}'s Spouse: ` + '\n'
+  familyInfo += 'First Name: ' + spouse[0].firstName + '\n'
+  familyInfo += 'Last Name: ' + spouse[0].lastName + '\n'
 }
 else{
-  spouseInfo += `${person.firstName} doesn\'t have a spouse` + '\n'
+  familyInfo += `${person.firstName} doesn\'t have a spouse` + '\n'
 }
-  let parent = []
+  let parentResults = []
   if(person.parents.length != 0){
-    person.parents.forEach(element => {
-    let results = people.filter(function(el){
-        if(el.id === element){
+    familyInfo += `${person.firstName}'s parent/s: ` + '\n'
+    person.parents.forEach(parentId => {
+    let results = people.filter(function(personObj){
+        if(personObj.id === parentId){
           return true;
         }
         else{
           return false;
         }
       })
-      parent.push(results[0])
+      parentResults.push(results[0])
     });
+    //create siblings array
+    //iterate over parent results for each parent in parentResults, return id/id's of the parent/parents
+    //iterate over people array until we find people with the same parent id
   }
   else{
-  spouseInfo += `${person.firstName} doesn\'t have any parents` + '\n'
+  familyInfo += `${person.firstName} doesn\'t have any parents` + '\n'
   }
-  parent.forEach(parent => {
-    
+  parentResults.forEach(parent => {
+    familyInfo += 'First Name: ' + parent.firstName + '\n'
+    familyInfo += 'Last Name: ' + parent.lastName + '\n'
   })
   
 
     
 
-  alert(spouseInfo)
+  alert(familyInfo)
 }
 
 function getEyeColor(){
