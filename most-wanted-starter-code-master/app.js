@@ -139,11 +139,15 @@ function findDescendants(person, people){
   })
   descendants = descendantsResults
   let descendantInfo = ''
+  if(descendants.length != 0){
   descendantInfo += `${person.firstName}'s children: ` + '\n'
   descendants.forEach(descendant => {
     descendantInfo += "First Name: " + descendant.firstName + '\n'
     descendantInfo += "Last Name: " + descendant.lastName + '\n'
-  })
+  })}
+  else{
+    descendantInfo += `${person.firstName} doesn\'t have any children` + '\n'
+  }
   alert(descendantInfo)
   let grandChildren = findGrandChildren(people, descendants)
   printGrandChildren(person, grandChildren)
@@ -234,10 +238,10 @@ function getEyeColor(people){
   }
 }
 
-function getGender(){
+function getGender(people){
   let userInput = promptFor('Do you want to search by gender?', yesNo).toLowerCase();
   if(userInput == 'yes'){
-   let gender = prompt('What is their gender?').toLowerCase();
+   let gender = promptForTheSequel('What is their gender?', customValidation, 'gender', people).toLowerCase();
    return gender;
   }
   else{
@@ -245,10 +249,10 @@ function getGender(){
   }
   }
 
-function getOccupation(){
+function getOccupation(people){
   let userInput = promptFor('Do you want to search by occupation?', yesNo).toLowerCase();
   if(userInput == 'yes'){
-    let gender = prompt('What is their occupation?').toLowerCase();
+    let gender = promptForTheSequel('What is their occupation?', customValidation, 'occupation', people).toLowerCase();
     return gender;
   }
   else{
@@ -256,20 +260,20 @@ function getOccupation(){
   }
   }
 
-function getHeight(){
+function getHeight(people){
   let userInput = promptFor("Do you want to search by height?",yesNo).toLowerCase();
   if (userInput == "yes") {
-    let gender = prompt("What is their height?").toLowerCase();
+    let gender = promptForTheSequel("What is their height?", customValidation, 'height', people).toLowerCase();
     return gender;
   } else {
     return "";
   }
 }
 
-function getWeight(){
+function getWeight(people){
   let userInput = promptFor('Do you want to search by weight?', yesNo).toLowerCase();
   if(userInput == 'yes'){
-    let gender = prompt('What is their weight?').toLowerCase();
+    let gender = promptForTheSequel('What is their weight?', customValidation, 'weight', people).toLowerCase();
     return gender;
   }
   else{
@@ -478,22 +482,63 @@ function autoValid(input){
 //can be used for things like eye color validation for example.
 
 function customValidation(input, type, people){
+  let genderArray = ['male', 'female']
+  let occupationArray = []
+  let heightArray = []
+  let weightArray = []
   let eyeColorArray = []
+  let inputFlag = false;
   people.forEach(person => {
+    weightArray.push(person.weight)
+    heightArray.push(person.height)
+    occupationArray.push(person.occupation)
     eyeColorArray.push(person.eyeColor)
   })
   if(type == 'eyeColor'){
     eyeColorArray.forEach(color => {
       if(color == input){
-        return true;
+        inputFlag = true;
+        return;
       }
     })
-    return false;
+    return inputFlag;
+  }
+  if(type == 'weight'){
+    weightArray.forEach(weight => {
+      if(weight == input){
+        inputFlag = true;
+        return;
+      }
+    })
+    return inputFlag;
+  }
+  if(type == 'height'){
+    heightArray.forEach(height => {
+      if(height == input){
+        inputFlag = true;
+        return;
+      }
+    })
+    return inputFlag;
+  }
+  if(type == 'occupation'){
+    occupationArray.forEach(occupation => {
+      if(occupation == input){
+        inputFlag = true;
+        return;
+      }
+    })
+    return inputFlag;
   }
   if(type == 'gender'){
-    return true;
+    genderArray.forEach(gender => {
+      if(gender == input){
+        inputFlag = true;
+        return;
+      }
+    })
+    return inputFlag;
   }
-
 }
 
 //#endregion
