@@ -68,10 +68,6 @@ function mainMenu(person, people){
   }
 }
 
-function findDescendants(person, people){
-  let descendants = []
-}
-
 function findSpouse(person, people){
   let spouse = people.filter(function(el){
     if(el.currentSpouse === person.id){
@@ -149,28 +145,48 @@ function findDescendants(person, people){
     descendantInfo += "Last Name: " + descendant.lastName + '\n'
   })
   alert(descendantInfo)
-  findGrandChildren(person, people, descendants)
+  let grandChildren = findGrandChildren(people, descendants)
+  printGrandChildren(person, grandChildren)
 }
 
-function findGrandChildren(person, people, children){
-  let grandChildren = []
-  let results = people.forEach(personObj => {
-      if(childObj.parents.includes(personObj.id)){
+function printGrandChildren(person, grandChildren){
+  let grandChildrenInfo = ''
+    if(grandChildren.length != 0){
+      grandChildrenInfo += `${person.firstName}'s Grandchildren: ` + '\n'
+      grandChildren.forEach(grandChildObj => {
+        grandChildObj.forEach(el => {
+          
+        grandChildrenInfo += "First Name: " + el.firstName + '\n'
+        grandChildrenInfo += "Last Name: " + el.lastName + '\n'
+      })})
+    }
+    else{
+      return false;
+    }
+  
+  alert(grandChildrenInfo)
+}
+  
+function findGrandChildren(people, children){
+  let childIdArray = children.map(function(child){
+    return child.id
+  })
+  let childArray = [];
+  childIdArray.forEach(childId => {
+    let childResults = people.filter(function(grandChild){
+      if(grandChild.parents.includes(childId)){
         return true;
       }
       else{
         return false;
       }
     })
+    if(childResults.length != 0){
+      childArray.push(childResults)
+    }
     
-  }
-  let grandChildrenInfo = ''
-  grandChildrenInfo += `${person.firstName}'s Grandchildren: ` + '\n'
-  results.forEach(grandChild => {
-  grandChildrenInfo += "First Name: " + grandChild.firstName + '\n'
-  grandChildrenInfo += "Last Name: " + grandChild.lastName + '\n'
   })
-  alert(grandChildrenInfo)
+  return childArray;
 }
 
 function findFamily(person, people){
