@@ -16,11 +16,11 @@ function app(people){
       break;
     case 'no':
       // TODO: search by traits
-  let eyeColor = getEyeColor();
-  let gender = getGender();
-  let occupation = getOccupation();
-  let height = getHeight();
-  let weight = getWeight();
+  let eyeColor = getEyeColor(people);
+  let gender = getGender(people);
+  let occupation = getOccupation(people);
+  let height = getHeight(people);
+  let weight = getWeight(people);
   searchResults = searchByTraits(eyeColor, gender, occupation, height, weight, people);
   searchResults = chooseSinglePerson(searchResults)
   displayPerson(searchResults)
@@ -223,10 +223,10 @@ else{
   alert(familyInfo)
 }
 
-function getEyeColor(){
+function getEyeColor(people){
   let userInput = promptFor('Do you want to search by eye color?', yesNo).toLowerCase();
   if(userInput == 'yes'){
-   let eyeColor = prompt('What is their eye color?').toLowerCase();
+   let eyeColor = promptForTheSequel('What is their eye color?', customValidation, 'eyeColor', people).toLowerCase();
    return eyeColor;
   }
   else{
@@ -256,7 +256,7 @@ function getOccupation(){
   }
   }
 
-function getHeight() {
+function getHeight(){
   let userInput = promptFor("Do you want to search by height?",yesNo).toLowerCase();
   if (userInput == "yes") {
     let gender = prompt("What is their height?").toLowerCase();
@@ -449,6 +449,15 @@ function promptFor(question, valid){
   return response;
 }
 
+function promptForTheSequel(question, valid, type, people){
+  let isValid;
+  do{
+    var response = prompt(question).trim();
+    isValid = valid(response, type, people);
+  } while(response === ""  ||  isValid === false)
+  return response;
+}
+
 // helper function/callback to pass into promptFor to validate yes/no answers.
 function yesNo(input){
   if(input.toLowerCase() == "yes" || input.toLowerCase() == "no"){
@@ -467,8 +476,24 @@ function autoValid(input){
 
 //Unfinished validation function you can use for any of your custom validation callbacks.
 //can be used for things like eye color validation for example.
-function customValidation(input){
-  
+
+function customValidation(input, type, people){
+  let eyeColorArray = []
+  people.forEach(person => {
+    eyeColorArray.push(person.eyeColor)
+  })
+  if(type == 'eyeColor'){
+    eyeColorArray.forEach(color => {
+      if(color == input){
+        return true;
+      }
+    })
+    return false;
+  }
+  if(type == 'gender'){
+    return true;
+  }
+
 }
 
 //#endregion
