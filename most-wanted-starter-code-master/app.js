@@ -99,7 +99,7 @@ function findParents(person, people){
 
 function findSiblings(person, people, parents){
   let siblings = []
-  if(parents.length != 0){
+  if(parents && parents.length != 0){
       siblings = people.filter(function(personObj){
       if(personObj.parents.includes(parents[0].id) && person.id != personObj.id){
           return true;
@@ -198,7 +198,7 @@ function findFamily(person, people){
   let spouse = findSpouse(person, people)
   let parents = findParents(person, people)
   let siblings = findSiblings(person, people, parents)
-if(spouse.length != 0){
+if(spouse && spouse.length != 0){
   familyInfo += `${person.firstName}'s Spouse: ` + '\n'
   familyInfo += 'First Name: ' + spouse[0].firstName + '\n'
   familyInfo += 'Last Name: ' + spouse[0].lastName + '\n'
@@ -207,7 +207,7 @@ else{
   familyInfo += `${person.firstName} doesn\'t have a spouse` + '\n'
 }
   
-  if(siblings.length != 0){
+  if(siblings && siblings.length != 0){
       familyInfo += `${person.firstName}'s sibling/s: ` + '\n'
       siblings.forEach(sibling => {
         familyInfo +=  'First Name: ' + sibling.firstName + '\n'
@@ -215,9 +215,9 @@ else{
       })
     }
     else{
-      familyInfo += `${person.firstName} doesn't have any siblings.`
+      familyInfo += `${person.firstName} doesn't have any siblings. ` + '\n'
     }
-    if(parents.length != 0){
+    if(parents && parents.length != 0){
       familyInfo += `${person.firstName}'s parents: ` + '\n'
       parents.forEach(parent => {
         familyInfo +=  'First Name: ' + parent.firstName + '\n'
